@@ -448,8 +448,13 @@ class Manager
         // Add the translations to the database, if not existing.
         // Modules translations are added here too.
         foreach ($groupKeys as $key) {
-            // Split the group and item
-            list($group, $item) = explode('.', $key, 2);
+            $parts = explode('.', $key, 2);
+            if (count($parts) < 2) {
+                \Log::warning("Translation key without group: $key");
+                continue;
+            }
+
+            list($group, $item) = $parts;
             $this->missingKey('', $group, $item);
         }
 
